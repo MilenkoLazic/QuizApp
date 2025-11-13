@@ -1,0 +1,20 @@
+﻿@page "/quizapp"
+<h3>Quiz Application</h3>
+<h2>@httpValue</h2>
+
+@code {
+    [Inject]
+    public IHttpClientFactory clientFactory { get; set; }
+
+    public HttpClient httpClient = new HttpClient();
+    public string httpValue;
+
+    protected override void OnInitialized()
+    {
+        httpClient = clientFactory.CreateClient("HttpClientService");
+        Console.WriteLine("");
+        httpValue = httpClient.BaseAddress.ToString();
+    }
+
+}
+
