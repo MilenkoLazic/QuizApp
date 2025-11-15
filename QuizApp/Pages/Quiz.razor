@@ -1,19 +1,29 @@
 ﻿@page "/quizapp"
+@using Microsoft.Extensions.Configuration
+@using System.Net.Http.Headers
 <h3>Quiz Application</h3>
 <h2>@httpValue</h2>
 
 @code {
     [Inject]
     public IHttpClientFactory clientFactory { get; set; }
+    [Inject]
+    public IConfiguration configuration { get; set; }
+    public static string Token;
 
     public HttpClient httpClient = new HttpClient();
     public string httpValue;
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
+        Token = configuration.GetValue<string>("Token");
         httpClient = clientFactory.CreateClient("HttpClientService");
-        Console.WriteLine("");
         httpValue = httpClient.BaseAddress.ToString();
+        httpClient.DefaultRequestHeaders.Add("X-Api-Key", "MQGQCGAILB20xg9X4DPxMU8FGudplvT44jJvHW7V");
+        var response = await httpClient.GetAsync(
+        "/api/v1/questions");
+        Console.WriteLine("");
+        
     }
 
 }
