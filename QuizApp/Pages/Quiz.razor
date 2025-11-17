@@ -1,8 +1,33 @@
 ﻿@page "/quizapp"
 @using Microsoft.Extensions.Configuration
 @using System.Net.Http.Headers
+@using Newtonsoft.Json
+@using QuizApp.Data
 <h3>Quiz Application</h3>
-<h2>@httpValue</h2>
+
+    @if(QuestionCategory != null)
+    {
+    @for(int i = 0; i < QuestionCategory.Count / 4; i++)
+    {
+            GetTopics(i*4,4);
+             <div class="d-block">
+            @foreach(var item in ListOfElements){
+            
+                <a href="/category?NameOfCategory=@item.name">
+            <div class="d-inline ">
+               
+                    @item.name
+                    
+            </div>
+                </a>
+              
+            }
+        </div>
+    }
+
+
+    }
+
 
 @code {
     [Inject]
@@ -10,20 +35,27 @@
     [Inject]
     public IConfiguration configuration { get; set; }
     public static string Token;
-
+    public List<Topic> QuestionCategory{ get; set; }
     public HttpClient httpClient = new HttpClient();
-    public string httpValue;
-
+    
+    public List<Topic> ListOfElements{ get; set; }
     protected async override Task OnInitializedAsync()
     {
         Token = configuration.GetValue<string>("Token");
         httpClient = clientFactory.CreateClient("HttpClientService");
-        httpValue = httpClient.BaseAddress.ToString();
-        httpClient.DefaultRequestHeaders.Add("X-Api-Key", "MQGQCGAILB20xg9X4DPxMU8FGudplvT44jJvHW7V");
-        var response = await httpClient.GetAsync(
-        "/api/v1/questions");
+
+        httpClient.DefaultRequestHeaders.Add("X-Api-Key", $"{Token}");
+        var response = await httpClient.GetAsync("/api/v1/categories");
+
+        //Deserijalizacija
+        var stringContent = await response.Content.ReadAsStringAsync();
+        QuestionCategory = JsonConvert.DeserializeObject<List<Topic>>(stringContent);
         Console.WriteLine("");
-        
+
+    }
+    public async Task GetTopics(int skip,int take)
+    {
+        ListOfElements = QuestionCategory.Skip(skip).Take(take).ToList<Topic>();
     }
 
 }

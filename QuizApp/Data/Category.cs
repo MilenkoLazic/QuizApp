@@ -1,6 +1,6 @@
 ﻿namespace QuizApp.Data
 {
-    public class Answers
+    public class Answer
     {
         public string answer_a { get; set; }
         public string answer_b { get; set; }
@@ -10,7 +10,7 @@
         public object answer_f { get; set; }
     }
 
-    public class CorrectAnswers
+    public class CorrectAnswer
     {
         public string answer_a_correct { get; set; }
         public string answer_b_correct { get; set; }
@@ -20,14 +20,14 @@
         public string answer_f_correct { get; set; }
     }
 
-    public class Questions
+    public class Category
     {
         public int id { get; set; }
         public string question { get; set; }
         public string description { get; set; }
-        public Answers answers { get; set; }
+        public Answer answers { get; set; }
         public string multiple_correct_answers { get; set; }
-        public CorrectAnswers correct_answers { get; set; }
+        public CorrectAnswer correct_answers { get; set; }
         public string explanation { get; set; }
         public object tip { get; set; }
         public List<object> tags { get; set; }
