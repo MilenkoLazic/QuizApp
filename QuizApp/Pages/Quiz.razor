@@ -3,6 +3,7 @@
 @using System.Net.Http.Headers
 @using Newtonsoft.Json
 @using QuizApp.Data
+@using QuizApp.Functionality
 <h3>Quiz Application</h3>
 
     @if(QuestionCategory != null)
@@ -13,7 +14,7 @@
              <div class="d-block">
             @foreach(var item in ListOfElements){
             
-                <a href="/category?NameOfCategory=@item.name">
+                <a href="/category/@item.name">
             <div class="d-inline ">
                
                     @item.name
@@ -37,7 +38,9 @@
     public static string Token;
     public List<Topic> QuestionCategory{ get; set; }
     public HttpClient httpClient = new HttpClient();
-    
+
+    public APIHelper apiHelper { get; set; } = new APIHelper();
+
     public List<Topic> ListOfElements{ get; set; }
     protected async override Task OnInitializedAsync()
     {
@@ -45,12 +48,7 @@
         httpClient = clientFactory.CreateClient("HttpClientService");
 
         httpClient.DefaultRequestHeaders.Add("X-Api-Key", $"{Token}");
-        var response = await httpClient.GetAsync("/api/v1/categories");
-
-        //Deserijalizacija
-        var stringContent = await response.Content.ReadAsStringAsync();
-        QuestionCategory = JsonConvert.DeserializeObject<List<Topic>>(stringContent);
-        Console.WriteLine("");
+        QuestionCategory = await apiHelper.GetCategoryTopics(Token, httpClient);
 
     }
     public async Task GetTopics(int skip,int take)

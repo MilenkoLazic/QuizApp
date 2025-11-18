@@ -20,7 +20,7 @@
         public string answer_f_correct { get; set; }
     }
 
-    public class Category
+    public class CategoryParameter
     {
         public int id { get; set; }
         public string question { get; set; }

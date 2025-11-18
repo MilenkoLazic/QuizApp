@@ -1,8 +1,43 @@
-﻿@page "/category"
+﻿@page "/category/{nameofcategory}"
+@using Data
+@using Newtonsoft.Json
+@using Functionality
+
 <h3>@NameOfCategory</h3>
 
+@if (QuestionCategory != null)
+{
+    @foreach(var item in QuestionCategory)
+    {
+        <div>
+            <p>@item.category</p>
+            <p>@item.question</p>
+        </div>
+    }  
+}
 @code {
     [Parameter]
     public string? NameOfCategory{ get; set; }
 
+    [Inject]
+    public IHttpClientFactory iClientFactory { get; set; }
+    [Inject]
+    public IConfiguration iConfiguration { get; set; }
+
+    public static string Token;
+    public List<CategoryParameter> QuestionCategory { get; set; }
+    public HttpClient httpClient = new HttpClient();
+    public APIHelper apiHelper { get; set; } = new APIHelper();
+
+    public List<CategoryParameter> ListOfElements { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        Token = iConfiguration.GetValue<string>("Token");
+        httpClient = iClientFactory.CreateClient("HttpClientService");
+
+        httpClient.DefaultRequestHeaders.Add("X-Api-Key", $"{Token}");
+        QuestionCategory = await apiHelper.GetCategoryQuestions(httpClient,NameOfCategory);
+
+    }
+   
 }
