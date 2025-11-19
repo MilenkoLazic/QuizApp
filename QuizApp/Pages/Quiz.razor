@@ -8,24 +8,23 @@
 
     @if(QuestionCategory != null)
     {
+        <div id="mainText">
     @for(int i = 0; i < QuestionCategory.Count / 4; i++)
     {
             GetTopics(i*4,4);
-             <div class="d-block">
+             <div class="d-block center">
             @foreach(var item in ListOfElements){
             
                 <a href="/category/@item.name">
-            <div class="d-inline ">
-               
-                    @item.name
-                    
-            </div>
+                    <div class="d-inline topicName">
+                            @item.name
+                    </div>
                 </a>
               
             }
-        </div>
+             </div>
     }
-
+        </div>
 
     }
 

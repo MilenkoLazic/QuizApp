@@ -5,7 +5,8 @@ namespace QuizApp.Functionality
 {
     public class APIHelper
     {
-        public List<Topic> QuestionCategory { get; set; }
+        public List<Topic> QuestionTopic { get; set; }
+        public List<CategoryParameter> QuestionCategory { get; set; }
         public APIHelper()
         {
             
@@ -20,15 +21,26 @@ namespace QuizApp.Functionality
             try
             {
 
-                QuestionCategory = JsonConvert.DeserializeObject<List<Topic>>(stringContent);
+                QuestionTopic = JsonConvert.DeserializeObject<List<Topic>>(stringContent);
             }
             catch (JsonReaderException ex)
             {
                 Console.WriteLine(ex.StackTrace + "  " + ex.Message);
+                
             }
             Console.WriteLine("");
 
+            return QuestionTopic;
+        }
+        public async Task<List<CategoryParameter>> GetCategoryQuestions(HttpClient httpClient, string NameOfCategory)
+        {
+            var response = await httpClient.GetAsync($"/api/v1/questions?category={NameOfCategory}");
+
+            //Deserijalizacija
+            var stringContent = await response.Content.ReadAsStringAsync();
+            QuestionCategory = JsonConvert.DeserializeObject<List<CategoryParameter>>(stringContent);
+            Console.WriteLine("");
             return QuestionCategory;
-        } 
+        }
     }
 }
