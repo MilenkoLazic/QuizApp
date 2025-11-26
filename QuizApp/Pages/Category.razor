@@ -2,19 +2,40 @@
 @using Data
 @using Newtonsoft.Json
 @using Functionality
-
+<div class="kategorija">
 <h3>@NameOfCategory</h3>
 
 @if (QuestionCategory != null)
 {
+    int counter = 1;
+    string display = " ";
     @foreach(var item in QuestionCategory)
     {
         <div>
-            <p>@item.category</p>
-            <p>@item.question</p>
+           
+            <p>@counter:@item.question</p>
+            <ul>
+                <li><label><input type="checkbox" />@item.answers.answer_a</label></li>
+                <li><label><input type="checkbox" />@item.answers.answer_b</label></li>
+             @(item.answers.answer_c!=null
+                ?@<li><label><input type="checkbox" />@item.answers.answer_c</label></li>
+                :@<span></span>)
+                @(item.answers.answer_d!=null
+                ?@<li><label><input type="checkbox" />@item.answers.answer_d</label></li>
+                :@<span></span>)
+                @(item.answers.answer_e!=null
+                ?@<li><label><input type="checkbox" />@item.answers.answer_e</label></li>
+                :@<span></span>)
+                @(item.answers.answer_f!=null
+                ?@<li><label><input type="checkbox" />@item.answers.answer_f</label></li>
+                :@<span></span>)
+            </ul>
+            
         </div>
+        counter++;
     }  
 }
+</div>
 @code {
     [Parameter]
     public string? NameOfCategory{ get; set; }

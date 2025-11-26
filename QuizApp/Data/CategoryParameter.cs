@@ -2,12 +2,19 @@
 {
     public class Answer
     {
+        public int count;
+        public Answer(string[] answerObjects)
+        {
+            count = this.GetType().GetProperties().Count();
+        }
         public string answer_a { get; set; }
         public string answer_b { get; set; }
         public string answer_c { get; set; }
         public string answer_d { get; set; }
         public object answer_e { get; set; }
         public object answer_f { get; set; }
+        
+        
     }
 
     public class CorrectAnswer
