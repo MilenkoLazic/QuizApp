@@ -6,3 +6,20 @@
     margin-right: auto;
     width: 800px;
 }
+li{
+    list-style:none;
+}
+.name{
+    text-align:center;
+    margin-bottom:50px;
+}
+.question{
+    margin-bottom:35px;
+}
+
+input:checked{
+    background-color:aquamarine;
+}
+input[type="checkbox"]{
+    background-color:green;
+}

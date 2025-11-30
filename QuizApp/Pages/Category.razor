@@ -3,7 +3,10 @@
 @using Newtonsoft.Json
 @using Functionality
 <div class="kategorija">
-<h3>@NameOfCategory</h3>
+<div class="name">
+    
+    <h3>@NameOfCategory</h3>
+</div>
 
 @if (QuestionCategory != null)
 {
@@ -11,11 +14,11 @@
     string display = " ";
     @foreach(var item in QuestionCategory)
     {
-        <div>
+        <div class="question">
            
             <p>@counter:@item.question</p>
             <ul>
-                <li><label><input type="checkbox" />@item.answers.answer_a</label></li>
+                <li ><label for="check"><input id="check"  type="checkbox" />@item.answers.answer_a</label></li>
                 <li><label><input type="checkbox" />@item.answers.answer_b</label></li>
              @(item.answers.answer_c!=null
                 ?@<li><label><input type="checkbox" />@item.answers.answer_c</label></li>
@@ -36,6 +39,7 @@
     }  
 }
 </div>
+<script src="javascriptFolder/script.js"></script>
 @code {
     [Parameter]
     public string? NameOfCategory{ get; set; }

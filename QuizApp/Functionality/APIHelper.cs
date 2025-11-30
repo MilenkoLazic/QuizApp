@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using QuizApp.Data;
+using System.Net;
 
 namespace QuizApp.Functionality
 {
@@ -27,6 +28,10 @@ namespace QuizApp.Functionality
             {
                 Console.WriteLine(ex.StackTrace + "  " + ex.Message);
                 
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             Console.WriteLine("");
 
