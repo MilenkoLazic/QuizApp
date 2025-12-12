@@ -5,52 +5,67 @@
 <div class="kategorija">
 <div class="name">
     
-    <h3>@NameOfCategory</h3>
+    <h3>@NameOfCategory Questions</h3>
 </div>
 
 @if (QuestionCategory != null)
 {
     int counter = 1;
-    string display = " ";
+        int questionCounter = 0;
+        string display = " ";
+
+    
     @foreach(var item in QuestionCategory)
     {
+        <EditForm Model="UserAnswers" OnValidSubmit="Submit" FormName="QuizForm">
         <div class="question">
            
-            <p>@counter:@item.question</p>
-            <ul>
-                <li ><label for="check"><input id="check"  type="checkbox" />@item.answers.answer_a</label></li>
-                <li><label><input type="checkbox" />@item.answers.answer_b</label></li>
-             @(item.answers.answer_c!=null
-                ?@<li><label><input type="checkbox" />@item.answers.answer_c</label></li>
-                :@<span></span>)
-                @(item.answers.answer_d!=null
-                ?@<li><label><input type="checkbox" />@item.answers.answer_d</label></li>
-                :@<span></span>)
-                @(item.answers.answer_e!=null
-                ?@<li><label><input type="checkbox" />@item.answers.answer_e</label></li>
-                :@<span></span>)
-                @(item.answers.answer_f!=null
-                ?@<li><label><input type="checkbox" />@item.answers.answer_f</label></li>
-                :@<span></span>)
-            </ul>
-            
+            <p>@(counter++):@item.question</p>
+                    
+                        
+                            <ul>
+                        <li ><label for="check"><InputCheckbox id="check" @bind-Value="UserAnswers.answer_a"  />@item.answers.answer_a</label></li>
+
+                        <li><label><InputCheckbox @bind-Value="UserAnswers.answer_b"   />@item.answers.answer_b</label></li>
+                     @(item.answers.answer_c!=null
+                        ?@<li><label><InputCheckbox @bind-Value="UserAnswers.answer_c"  />@item.answers.answer_c</label></li>
+                        :@<span></span>)
+                        @(item.answers.answer_d!=null
+                        ?@<li><label><InputCheckbox @bind-Value="UserAnswers.answer_d" />@item.answers.answer_d</label></li>
+                        :@<span></span>)
+                        @(item.answers.answer_e!=null
+                        ?@<li><label><InputCheckbox @bind-Value="UserAnswers.answer_e" />@item.answers.answer_e</label></li>
+                        :@<span></span>)
+                        @(item.answers.answer_f!=null
+                        ?@<li><label><InputCheckbox @bind-Value="UserAnswers.answer_f" />@item.answers.answer_f</label></li>
+                        :@<span></span>)
+                    </ul>
+             
         </div>
-        counter++;
+         <button type="submit">Submit</button>
+        </EditForm>
     }  
+
+    
 }
 </div>
 <script src="javascriptFolder/script.js"></script>
 @code {
+
     [Parameter]
     public string? NameOfCategory{ get; set; }
 
+    public List<CategoryParameter> QuestionCategory { get; set; }
     [Inject]
     public IHttpClientFactory iClientFactory { get; set; }
     [Inject]
     public IConfiguration iConfiguration { get; set; }
-
     public static string Token;
-    public List<CategoryParameter> QuestionCategory { get; set; }
+
+    [SupplyParameterFromForm]
+    public UserAnswers UserAnswers { get; set; } = new UserAnswers();
+    public List<UserAnswers> listOfUserAnswers = new List<UserAnswers>();
+
     public HttpClient httpClient = new HttpClient();
     public APIHelper apiHelper { get; set; } = new APIHelper();
 
@@ -64,5 +79,9 @@
         QuestionCategory = await apiHelper.GetCategoryQuestions(httpClient,NameOfCategory);
 
     }
-   
+    public void Submit()
+    {
+        listOfUserAnswers.Add(UserAnswers);
+        UserAnswers = new UserAnswers();
+    }
 }

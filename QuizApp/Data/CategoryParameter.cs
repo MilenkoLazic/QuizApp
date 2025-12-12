@@ -41,4 +41,13 @@
         public string category { get; set; }
         public string difficulty { get; set; }
     }
+    public class UserAnswers
+    {
+        public bool answer_a { get; set; }
+        public bool answer_b { get; set; }
+        public bool answer_c { get; set; }
+        public bool answer_d { get; set; }
+        public bool answer_e { get; set; }
+        public bool answer_f { get; set; }
+    }
 }
